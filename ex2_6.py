@@ -6,18 +6,7 @@ x1, x2, y1, y2 = -1.8, 1.8, -1.8, 1.8
 c_real, c_imag = -0.62772, -.42193
 
 
-def timefn(fn):
-    @wraps(fn)
-    def measure_time(*args, **kwargs):
-        t1 = time.time()
-        result = fn(*args, **kwargs)
-        t2 = time.time()
-        print(f"@timefn: {fn.__name__} took {t2 - t1} seconds")
-        return result
-    return measure_time
-
-
-@timefn
+@profile
 def calculate_z_serial_purepython(maxiter, zs, cs):
     """Calculate output list using Julia update rule"""
     output = [0] * len(zs)
@@ -32,6 +21,7 @@ def calculate_z_serial_purepython(maxiter, zs, cs):
     return output
 
 
+@profile
 def calc_pure_python(desired_width, max_iterations):
     """Create a list of complex coordinates (zs) and complex parameters (cs), build Julia set"""
     x_step = (x2 - x1) / desired_width  # x_step > 0
